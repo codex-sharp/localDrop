@@ -45,14 +45,13 @@ def delete_shared_file(fpath):
 def get_file_path(url):
     # extract fid from the url
     qs_dict = parse_qs(urlparse(url)[4])
-    print(qs_dict)
     fid = qs_dict['fid']
     sql = """SELECT * FROM `files` WHERE fid = '{}'""".format(fid[0])
-    print(sql)
     cur.execute(sql)
     res = cur.fetchone()
     if res == None:
         raise ValueError("Invalid url")
+    print(res['fpath'])
     return res['fpath']
 
 
