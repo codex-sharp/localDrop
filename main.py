@@ -15,14 +15,12 @@ def main():
     file = args.f
     # actions here
     if action == 'share':
-        fid = generate_fid(file)
-        share_link = 'http://' + IP_ADDRESS + '?fid=' + fid
-        print('File share link:\n {}'.format(share_link))
-    elif action == 'start_server':
-        # todo
+        generate_share_link(file, IP_ADDRESS)
     elif action == 'list_shares':
-        # todo
+        list_files_shared()
     elif action == 'delete_share':
-        # todo
+        delete_shared_file(file)
+    # elif action == 'start_server':
+    #     # todo
 
 main()

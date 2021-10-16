@@ -18,7 +18,7 @@ def create_tables():
 create_tables()
 
 
-def generate_fid(file):
+def generate_share_link(file, IP_ADDRESS):
     # check if file already shared
     sql = """SELECT * FROM `files` WHERE fpath = '{}'""".format(file)
     cur.execute(sql)
@@ -32,10 +32,16 @@ def generate_fid(file):
         con.commit()
     else:
         fid = res['fid']
+    share_link = 'http://' + IP_ADDRESS + '?fid=' + str(fid)
+    print('File share link:\n {}'.format(share_link))
+
+
+def delete_shared_file(fpath):
+    sql = """DELETE FROM `files` WHERE fpath = '{}'""".format(fpath)
+    cur.execute(sql)
+    con.commit()
+
     
-    return fid
-
-
 def get_file_path(url):
     # extract fid from the url
     qs_dict = parse_qs(urlparse(url)[4])
@@ -48,4 +54,11 @@ def get_file_path(url):
     if res == None:
         raise ValueError("Invalid url")
     return res['fpath']
-    
+
+
+def list_files_shared():
+    sql = """SELECT * FROM `files`"""   
+    cur.execute(sql)
+    files = cur.fetchall()
+    for file in files:
+        print('File id: {}, File path: {}'.format(file['fid'], file['fpath']))
